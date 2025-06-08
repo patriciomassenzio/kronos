@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Scanbot" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Opcionalmente: puedes personalizar colores -->
+        <item name="colorPrimary">#C8193C</item>
+        <item name="colorPrimaryDark">#8C132E</item>
+        <item name="colorAccent">#FF4081</item>
+    </style>
+</resources>

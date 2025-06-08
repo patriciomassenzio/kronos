@@ -1,0 +1,89 @@
+# Archivos y carpetas generados por Android Studio
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+/.idea/compiler.xml
+/.idea/jarRepositories.xml
+/.idea/misc.xml
+/.idea/gradle.xml
+/.idea/kotlinc.xml
+/.idea/deploymentTargetDropDown.xml
+.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+
+# Archivos específicos de Gradle
+.gradle/
+build/
+/gradle/wrapper/gradle-wrapper.jar
+
+# Archivos específicos de Kotlin
+*.class
+*.log
+*.ctxt
+.mtj.tmp/
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+replay_pid*
+out/
+.kotlin/
+
+# Archivos generados
+bin/
+gen/
+
+# Archivos locales de configuración
+local.properties
+
+# Proguard
+proguard/
+
+# Logs
+*.log
+
+# Configuración específica de Android Studio
+.navigation/
+captures/
+
+# Configuración de keystore
+*.jks
+*.keystore
+keystore.properties
+
+# Configuración de Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Google Services (por ejemplo, google-services.json)
+/app/google-services.json
+
+# Crashlytics
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# Linux
+*~
