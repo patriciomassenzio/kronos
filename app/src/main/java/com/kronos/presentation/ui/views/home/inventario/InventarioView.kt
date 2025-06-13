@@ -1,104 +1,180 @@
 package com.kronos.presentation.ui.views.home.inventario
 
 import android.app.Activity
-import androidx.activity.result.ActivityResultLauncher
+import android.content.Context
+import android.net.Uri
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material.Text
+import androidx.compose.material.Button
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
+import io.scanbot.pdf.model.*
+import io.scanbot.sdk.ScanbotSDK
+import io.scanbot.sdk.docprocessing.Document
+import io.scanbot.sdk.entity.Language
+import io.scanbot.sdk.ocr.OcrEngine
+import io.scanbot.sdk.ocr.OcrSettings
+import io.scanbot.sdk.ocr.model.Block
+import io.scanbot.sdk.ocr.model.Line
+import io.scanbot.sdk.ocr.model.Word
 import io.scanbot.sdk.ui_v2.common.ScanbotColor
 import io.scanbot.sdk.ui_v2.document.DocumentScannerActivity
 import io.scanbot.sdk.ui_v2.document.configuration.DocumentScanningFlow
 import io.scanbot.sdk.ui_v2.document.configuration.PageSnapFeedbackMode
 import io.scanbot.sdk.ui_v2.document.configuration.UserGuidanceVisibility
-import android.Manifest
-import android.content.pm.PackageManager
-import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
-
 
 @Composable
 fun InventarioView() {
     val context = LocalContext.current
     val activity = context as Activity
+    val scanbotSDK = remember { ScanbotSDK(context.applicationContext) }
 
-    var hasCameraPermission by remember {
-        mutableStateOf(
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_GRANTED
+    // createOcrEngine(...)
+    val ocrRecognizer = scanbotSDK.createOcrEngine()
+
+    // enableBinarizationInOcrSettingsSnippet(...)
+    ScanbotSDKInitializer()
+        .useOcrSettings(OcrSettings.Builder().binarizeImage(true).build())
+        .initialize(activity.application)
+
+    // engineModeTesseractSnippet(...)
+    val languages = mutableSetOf<Language>()
+    languages.add(Language.SPA)
+    ocrRecognizer.setOcrConfig(
+        OcrEngine.OcrConfig(
+            engineMode = OcrEngine.EngineMode.TESSERACT,
+            languages = languages,
         )
-    }
+    )
 
-    val documentScannerResult = rememberLauncherForActivityResult(
+    val scannerLauncher = rememberLauncherForActivityResult(
         contract = DocumentScannerActivity.ResultContract()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            result.result?.let {
-                Toast.makeText(context, "Escaneo exitoso", Toast.LENGTH_SHORT).show()
+            val document = result.result?.result
+            if (document != null) {
+                val ocrResult = ocrRecognizer.recognizeFromDocument(document)
+                val text: String = ocrResult.recognizedText
+                val firstBlock: List<Block> = ocrResult.ocrPages[0].blocks
+                val linesInFirstBlock: List<Line> = ocrResult.ocrPages[0].blocks[0].lines
+                val wordsInFirstLine: List<Word> = ocrResult.ocrPages[0].blocks[0].lines[0].words
+
+                Toast.makeText(context, "OCR detectado: ${text.take(100)}...", Toast.LENGTH_LONG).show()
+
+                val pdfGenerator = scanbotSDK.createPdfGenerator()
+                val pdfConfig = PdfConfiguration(
+                    attributes = PdfAttributes(
+                        author = "",
+                        title = "",
+                        subject = "",
+                        keywords = "",
+                        creator = ""
+                    ),
+                    pageSize = PageSize.A4,
+                    pageDirection = PageDirection.AUTO,
+                    dpi = 200,
+                    jpegQuality = 100,
+                    pageFit = PageFit.NONE,
+                    resamplingMethod = ResamplingMethod.NONE,
+                )
+                val ocrConfig = OcrEngine.OcrConfig(engineMode = OcrEngine.EngineMode.SCANBOT_OCR)
+                val success = pdfGenerator.generateWithOcrFromDocument(document, pdfConfig, ocrConfig)
+                if (success) {
+                    Log.d("PDF", "PDF con OCR generado correctamente")
+                } else {
+                    Log.e("PDF", "Fallo al generar PDF con OCR")
+                }
             }
         }
     }
 
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { granted ->
-        hasCameraPermission = granted
-        if (granted) {
-            launchDocumentScanner(documentScannerResult)
-        } else {
-            Toast.makeText(context, "Permiso de cámara denegado", Toast.LENGTH_SHORT).show()
-        }
+    Button(onClick = {
+        scannerLauncher.launch(DocumentScanningFlow())
+    }) {
+        Text("Escanear y procesar OCR")
     }
 
-    LaunchedEffect(Unit) {
-        if (hasCameraPermission) {
-            launchDocumentScanner(documentScannerResult)
-        } else {
-            permissionLauncher.launch(Manifest.permission.CAMERA)
-        }
+    // Botón temporal para evitar función vacía
+    Button(onClick = { /* Aquí podrías lanzar el escáner u otra acción */ }) {
+        Text("Iniciar flujo OCR")
     }
 }
 
-private fun launchDocumentScanner(
-    launcher: ActivityResultLauncher<DocumentScanningFlow>
-) {
-    val configuration = DocumentScanningFlow().apply {
-        outputSettings.pagesScanLimit = 30
-        documentUuid = null
-        cleanScanningSession = true
+fun createPdfWithOcrFromDocument(scanbotSDK: ScanbotSDK, document: Document): File? {
+    val pdfGenerator = scanbotSDK.createPdfGenerator()
 
-        appearance.bottomBarBackgroundColor = ScanbotColor("#C8193C")
+    val pdfConfig = PdfConfiguration(
+        attributes = PdfAttributes(
+            author = "",
+            title = "",
+            subject = "",
+            keywords = "",
+            creator = ""
+        ),
+        pageSize = PageSize.A4,
+        pageDirection = PageDirection.AUTO,
+        dpi = 200,
+        jpegQuality = 100,
+        pageFit = PageFit.NONE,
+        resamplingMethod = ResamplingMethod.NONE
+    )
 
-        screens.camera.apply {
-            topUserGuidance.visible = true
-            topUserGuidance.background.fillColor = ScanbotColor("#4A000000")
-            topUserGuidance.title.text = "Scan your document"
+    val ocrConfig = OcrEngine.OcrConfig(
+        engineMode = OcrEngine.EngineMode.TESSERACT,
+        languages = setOf(Language.SPA)
+    )
 
-            userGuidance.visibility = UserGuidanceVisibility.ENABLED
-            userGuidance.background.fillColor = ScanbotColor("#4A000000")
-            userGuidance.title.text = "Hold your device steady"
+    val success = pdfGenerator.generateWithOcrFromDocument(
+        document = document,
+        pdfConfig = pdfConfig,
+        ocrConfig = ocrConfig
+    )
 
-            bottomBar.importButton.visible = true
-            bottomBar.importButton.title.visible = true
-            bottomBar.importButton.title.text = "Importar"
-
-            bottomBar.autoSnappingModeButton.title.visible = true
-            bottomBar.autoSnappingModeButton.title.text = "Auto"
-
-            bottomBar.manualSnappingModeButton.title.visible = true
-            bottomBar.manualSnappingModeButton.title.text = "Manual"
-
-            bottomBar.torchOnButton.title.visible = true
-            bottomBar.torchOnButton.title.text = "On"
-            bottomBar.torchOffButton.title.visible = true
-            bottomBar.torchOffButton.title.text = "Off"
-
-            captureFeedback.cameraBlinkEnabled = true
-            captureFeedback.snapFeedbackMode = PageSnapFeedbackMode.pageSnapCheckMarkAnimation()
-        }
+    val pdfFile = document.pdfUri?.toFile()
+    return if (success && pdfFile != null && pdfFile.exists()) {
+        pdfFile
+    } else {
+        null
     }
+}
 
-    launcher.launch(configuration)
+fun createPdfWithOcrFromImages(scanbotSDK: ScanbotSDK, imageUris: List<Uri>): File? {
+    val pdfGenerator = scanbotSDK.createPdfGenerator()
+
+    val pdfConfig = PdfConfiguration(
+        attributes = PdfAttributes(
+            author = "",
+            title = "",
+            subject = "",
+            keywords = "",
+            creator = ""
+        ),
+        pageSize = PageSize.A4,
+        pageDirection = PageDirection.AUTO,
+        dpi = 200,
+        jpegQuality = 100,
+        pageFit = PageFit.NONE,
+        resamplingMethod = ResamplingMethod.NONE
+    )
+
+    val ocrConfig = OcrEngine.OcrConfig(
+        engineMode = OcrEngine.EngineMode.TESSERACT,
+        languages = setOf(Language.SPA)
+    )
+
+    val pdfFile = pdfGenerator.generateWithOcrFromUris(
+        imageFileUris = imageUris,
+        pdfConfig = pdfConfig,
+        ocrConfig = ocrConfig
+    )
+
+    return if (pdfFile != null && pdfFile.exists()) {
+        pdfFile
+    } else {
+        null
+    }
 }

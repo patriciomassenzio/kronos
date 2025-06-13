@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.appcompat)
+    implementation(libs.androidx.webkit)
 
     // Test
     testImplementation(libs.junit)
@@ -104,10 +105,14 @@ dependencies {
     // LiveData
     implementation(libs.androidx.runtime.livedata)
 
-    implementation("io.scanbot:sdk-package-1:7.0.3")
+    // Scanbot SDK
+
     implementation("io.scanbot:sdk-package-ui:7.0.3")
     implementation("io.scanbot:sdk-docqualityanalyzer-assets:7.0.3")
     implementation("io.scanbot:rtu-ui-v2-bundle:7.0.3")
+    implementation("io.scanbot:sdk-package-2:7.0.3")
+    implementation("io.scanbot:sdk-common-ocr-assets:7.0.3")
+
 
 
 

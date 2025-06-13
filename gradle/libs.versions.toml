@@ -30,12 +30,11 @@ scanbotSdk = "7.0.3"
 scanbotTextPatternUi = "1.0.0"
 
 appcompatVersion = "1.7.1"
+webkit = "1.14.0"
 
 
 [libraries]
 
-sdk-ui-v2 = { module = "io.scanbot:sdk-ui-v2", version.ref = "scanbotSdk" }
-io-scanbot-sdk-package1-x = { module = "io.scanbot:sdk-package-2", version.ref = "scanbotSdkPackageX" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -61,11 +60,7 @@ hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hil
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
 
 
-sdk-textpattern-scanner = { module = "io.scanbot:sdk-textpattern-scanner", version.ref = "sdkTextpatternScanner" }
 
-sdk-textpattern-ui = { module = "io.scanbot:sdk-textpattern-ui", version.ref = "scanbotTextPatternUi" }
-sdk-textpattern-assets = { module = "io.scanbot:sdk-textpattern-assets", version.ref = "scanbotSdk" }
-rtu-ui-v2-bundle = { module = "io.scanbot:rtu-ui-v2-bundle", version.ref = "scanbotSdk" }
 
 
 
@@ -75,6 +70,7 @@ androidx-datastore-preferences = { module = "androidx.datastore:datastore-prefer
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "livedata" }
 
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompatVersion" }
+androidx-webkit = { group = "androidx.webkit", name = "webkit", version.ref = "webkit" }
 
 
 

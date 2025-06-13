@@ -17,9 +17,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
 
-        // Add Scanbot SDK maven repositories here:
-        maven(url = "https://nexus.scanbot.io/nexus/content/repositories/releases/")
-        maven(url = "https://nexus.scanbot.io/nexus/content/repositories/snapshots/")
+        maven { url = uri("https://nexus.scanbot.io/nexus/content/repositories/releases/") }
     }
 }
 
