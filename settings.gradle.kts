@@ -16,14 +16,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-
-        // Add Scanbot SDK maven repositories here:
-        maven(url = "https://nexus.scanbot.io/nexus/content/repositories/releases/")
-        maven(url = "https://nexus.scanbot.io/nexus/content/repositories/snapshots/")
     }
 }
 
-
 rootProject.name = "Kronos"
 include(":app")
-

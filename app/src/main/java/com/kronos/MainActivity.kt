@@ -19,15 +19,12 @@ import com.kronos.data.datastore.StoreToken
 import com.kronos.navigation.AppNavigation
 import com.kronos.presentation.ui.theme.KronosTheme
 
-
-
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         pantallaCompleta()
-
         setContent {
             val navController = rememberNavController()
 

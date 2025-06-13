@@ -1,41 +1,28 @@
 [versions]
-agp = "8.10.1"
-
+agp = "8.8.1"
 kotlin = "2.0.0"
-
+coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.9.1"
+lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
-composeBom = "2025.06.00"
+composeBom = "2024.04.01"
 
-core = "1.49.0"
+core = "1.44.0"
 hiltAndroid = "2.51.1"
 mapsCompose = "4.4.1"
-navigationCompose = "2.9.0"
-
-sdkTextpatternScanner = "7.0.3"
-
-
+navigationCompose = "2.7.7"
 retrofit = "2.11.0"
 converterGson = "2.11.0"
-roomRuntime = "2.7.1"
-materialIconsExtendedDesktop = "1.7.8"
-darastore = "1.1.7"
-livedata = "1.8.2"
-scanbotSdkPackageX = "7.0.3"
-
-scanbotSdk = "7.0.3"
-scanbotTextPatternUi = "1.0.0"
-
-appcompatVersion = "1.7.1"
+roomRuntime = "2.6.1"
+materialIconsExtendedDesktop = "1.6.8"
+darastore = "1.1.1"
+livedata = "1.7.5"
 
 
 [libraries]
-
-sdk-ui-v2 = { module = "io.scanbot:sdk-ui-v2", version.ref = "scanbotSdk" }
-io-scanbot-sdk-package1-x = { module = "io.scanbot:sdk-package-2", version.ref = "scanbotSdkPackageX" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -50,7 +37,6 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 
-
 androidx-material-icons-extended-desktop = { module = "androidx.compose.material:material-icons-extended-desktop", version.ref = "materialIconsExtendedDesktop" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
@@ -59,23 +45,10 @@ core = { module = "com.google.ar:core", version.ref = "core" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltAndroid" }
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
-
-
-sdk-textpattern-scanner = { module = "io.scanbot:sdk-textpattern-scanner", version.ref = "sdkTextpatternScanner" }
-
-sdk-textpattern-ui = { module = "io.scanbot:sdk-textpattern-ui", version.ref = "scanbotTextPatternUi" }
-sdk-textpattern-assets = { module = "io.scanbot:sdk-textpattern-assets", version.ref = "scanbotSdk" }
-rtu-ui-v2-bundle = { module = "io.scanbot:rtu-ui-v2-bundle", version.ref = "scanbotSdk" }
-
-
-
 retrofit = {module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit"}
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "darastore" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "livedata" }
-
-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompatVersion" }
-
 
 
 [plugins]

@@ -98,9 +98,9 @@ class RegisterViewModel(private val context: Context): ViewModel() {
 
     fun users (username: String,email: String, password: String, onSuccess: () -> Unit,) {
 
-        val request = UserModel(username,"nada",email, password, "nada")
+        val request = UserModel(username,"nada",email, password, "moso", restaurantes = "Kfc")
 
-        LoginService(context).apiService.users(request).enqueue(object : Callback<UserModel> {
+        LoginService(context).apiService.usersGet(request).enqueue(object : Callback<UserModel> {
 
 
             override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
