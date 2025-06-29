@@ -16,8 +16,12 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+
+        maven { url = uri("https://nexus.scanbot.io/nexus/content/repositories/releases/") }
     }
 }
 
+
 rootProject.name = "Kronos"
 include(":app")
+

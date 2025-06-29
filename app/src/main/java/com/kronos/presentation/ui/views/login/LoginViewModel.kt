@@ -53,6 +53,7 @@ class LoginViewModel(private val context: Context) : ViewModel() {
     private val _passwordError = MutableLiveData<String?>()
     val passwordError: LiveData<String?> = _passwordError
 
+
     private val _validEmail = MutableLiveData(true)
     val validEmail: LiveData<Boolean> = _validEmail
 
@@ -71,6 +72,11 @@ class LoginViewModel(private val context: Context) : ViewModel() {
 
     private var _validpin =  MutableLiveData(true)
     val validpin:LiveData<Boolean> = _validpin
+
+
+
+
+
 
     var showAlert by mutableStateOf(false)
 
@@ -152,54 +158,60 @@ class LoginViewModel(private val context: Context) : ViewModel() {
     }
 
 
+
+
     private fun enableLoginEmail(email: String) =
         Patterns.EMAIL_ADDRESS.matcher(email).matches()
 
     private fun enableLoginPassword(password: String) =
         password.length > 8
+
+
+
+
     fun login(
         username: String,
         password: String,
         onResult: (String?) -> Unit,
         onSuccess: () -> Unit,
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val request = LoginModel(username, password)
-
-
-            LoginService(context).apiService.login(request).enqueue(object : Callback<LoginResponse> {
-
-                override fun onResponse(
-                    call: Call<LoginResponse>,
-                    response: Response<LoginResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val token = response.body()?.access_token
-                        onResult(token)
-                        onSuccess()
-                        //authViewModel.updateAccessToken(token)
-                        Log.d("LoginSuccess", "Token: ${response.body()?.access_token}")
-
-                        //navController.navigate("homeView")
-
-
-                    } else {
-                        showAlert = true
-                        Log.e("LoginErrorLOGIN", "Error: ${response.code()} - ${response.message()}")
-                        //onResult(null)
-                        //val error = showAlert
-
-                    }
-                }
-
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    showAlert = true
-                    // onResult(null)
-
-
-                }
-            })
-        }
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val request = LoginModel(username, password)
+//
+//
+//            LoginService(context).apiService.login(request).enqueue(object : Callback<LoginResponse> {
+//
+//                override fun onResponse(
+//                    call: Call<LoginResponse>,
+//                    response: Response<LoginResponse>
+//                ) {
+//                    if (response.isSuccessful) {
+//                        val token = response.body()?.access_token
+//                        onResult(token)
+//                        onSuccess()
+//                        //authViewModel.updateAccessToken(token)
+//                        Log.d("LoginSuccess", "Token: ${response.body()?.access_token}")
+//
+//                        //navController.navigate("homeView")
+//
+//
+//                    } else {
+//                        showAlert = true
+//                        Log.e("LoginErrorLOGIN", "Error: ${response.code()} - ${response.message()}")
+//                        //onResult(null)
+//                        //val error = showAlert
+//
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+//                    showAlert = true
+//                    // onResult(null)
+//
+//
+//                }
+//            })
+//        }
     }
 
     fun closeAlert() {
@@ -207,20 +219,18 @@ class LoginViewModel(private val context: Context) : ViewModel() {
 
     }
 
-    fun onLoginChangedPin(newPin: String) {
-
-        if (newPin.length <= 4 && newPin.all { it.isDigit() }) {
-            _pin.value = newPin
-
-            if (newPin.length == 4) {
-                // Convierte el pin a Int
-                val pinValue = newPin.toIntOrNull()
-                if (pinValue != null) {
-                    _pinInt.value = pinValue
-                }
-            }
-        }
-    }
+//    fun onLoginChangedPin(newPin: String) {
+//
+//        if (newPin.length <= 4 && newPin.all { it.isDigit() }) {
+//            _pin.value = newPin
+//
+//            if (newPin.length == 4) {
+//                // Convierte el pin a Int
+//                val pinValue = newPin.toIntOrNull()
+//                _pinInt.value = pinValue
+//            }
+//        }
+//    }
 
 
 }

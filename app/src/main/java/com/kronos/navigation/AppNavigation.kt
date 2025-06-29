@@ -1,17 +1,14 @@
 package com.kronos.navigation
 
+
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.kronos.data.datastore.StorePin
-import com.kronos.data.datastore.StoreToken
 import com.kronos.presentation.ui.views.login.LoginViewModel
-
+import com.kronos.presentation.ui.views.register.RegisterViewModel
 import com.kronos.presentation.ui.views.home.HomeView
 import com.kronos.presentation.ui.views.home.inventario.InventarioView
 import com.kronos.presentation.ui.views.home.listadoMesasFija
@@ -22,7 +19,6 @@ import com.kronos.presentation.ui.views.home.reservas.ReservaView
 import com.kronos.presentation.ui.views.home.salon.SalonView
 import com.kronos.presentation.ui.views.login.LoginView
 import com.kronos.presentation.ui.views.register.RegisterView
-import com.kronos.presentation.ui.views.register.RegisterViewModel
 
 @Composable
 fun AppNavigation(navController: NavHostController, modifier: Modifier) {
@@ -65,7 +61,7 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier) {
 }
 
 @Composable
-fun HomeNavigation(navController: NavHostController, modifier: Modifier = Modifier) {
+fun HomeNavigation(navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = Routes.Salon.route
@@ -81,7 +77,7 @@ fun HomeNavigation(navController: NavHostController, modifier: Modifier = Modifi
             PedidosDetalleView(mesaFija, navController)
         }
         composable(Routes.Inventario.route) {
-            InventarioView(navController)
+            InventarioView()
         }
         composable(Routes.Reservas.route) {
             ReservaView(navController)

@@ -7,6 +7,5 @@ data class UserModel (
     @SerializedName("last_name") val last_name: String,
     @SerializedName("email") val email: String,
     @SerializedName("password") val password: String,
-    @SerializedName("rol") val rol: String,
-    @SerializedName("restaurantes") val restaurantes: String
+    @SerializedName("rol") val rol: String
 )

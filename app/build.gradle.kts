@@ -3,8 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
-    id ("com.google.dagger.hilt.android")
-    //id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
+    // id("com.google.devtools.ksp")
 }
 
 android {
@@ -19,9 +19,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -33,29 +31,31 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
     buildFeatures {
         compose = true
     }
-//    composeOptions {
-//        kotlinCompilerExtensionVersion = "1.5.1"
-//    }
-//    packaging {
-//        resources {
-//            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-//        }
-//    }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/native-image/**"
+            excludes += "META-INF/DEPENDENCIES"
+        }
+    }
 }
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
@@ -63,6 +63,10 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.appcompat)
+    implementation(libs.androidx.webkit)
+
+    // Test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -71,38 +75,45 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //Dagger Hilt
-    implementation (libs.hilt.android)
-    kapt (libs.hilt.compiler)
+    // Dagger Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
-    //Navigation Compose
+    // Navigation Compose
     implementation(libs.androidx.navigation.compose)
 
-    //retrofit
+    // Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
-    //Room
+    // Room
     implementation(libs.androidx.room.runtime)
-    //noinspection KaptUsageInsteadOfKsp
-    kapt (libs.androidx.room.compiler)
+    kapt(libs.androidx.room.compiler)
 
-    //Android Maps
-    implementation (libs.maps.compose)
+    // Maps
+    implementation(libs.maps.compose)
 
-    //ARCore
-    implementation (libs.core)
+    // ARCore
+    implementation(libs.core)
 
-    //Icons
+    // Icons
     implementation(libs.androidx.material.icons.extended.desktop)
 
-    //DataStore
+    // DataStore
     implementation(libs.androidx.datastore.preferences)
 
-    //livedata
+    // LiveData
     implementation(libs.androidx.runtime.livedata)
 
-//    //Constraint Layout
-//    implementation(libs.androidx.constraintlayout.compose)
+    // Scanbot SDK
+
+    implementation("io.scanbot:sdk-package-ui:7.0.3")
+    implementation("io.scanbot:sdk-docqualityanalyzer-assets:7.0.3")
+    implementation("io.scanbot:rtu-ui-v2-bundle:7.0.3")
+    implementation("io.scanbot:sdk-package-2:7.0.3")
+    implementation("io.scanbot:sdk-common-ocr-assets:7.0.3")
+
+
+
 
 }
