@@ -1,5 +1,6 @@
 package com.kronos.presentation.ui.viewmodel
 
+
 import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,11 +23,11 @@ class EmployeesLoginViewModel(private val context: Context) : ViewModel() {
 
 
 
-    fun employeesPin(identifier: String) {
-        if(identifier != ""){
-            val request = identifier.let { EmployeesLogin(it.toInt()) }
+    fun employeesPin(identifier: String, name: String) {
+        if (identifier.isNotBlank() && name.isNotBlank()) {
+            val request = EmployeesLogin(identifier.toInt(), name)
 
-            if (request != null) {
+            if (true) {
                 LoginService(context).apiService.employeesLogin( request)
                     .enqueue(object : Callback<EmployeesLogin> {
                         override fun onResponse(

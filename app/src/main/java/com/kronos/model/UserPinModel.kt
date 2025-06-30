@@ -10,6 +10,7 @@ data class UserPinModel(
     @SerializedName("phone") val phone: String= "",
     @SerializedName("address") val address: String= "",
     @SerializedName("email") val email: String,
+    @SerializedName("restaurant") val restaurant: String = "",
     @SerializedName("restaurante_id") val restaurante_id: List<Int> = emptyList(),
     @SerializedName("emergency_contact") val emergency_contact: Int = 0,
     @SerializedName("work_schedule") val work_schedule: String = "",
