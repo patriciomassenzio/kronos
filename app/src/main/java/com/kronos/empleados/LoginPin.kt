@@ -1,5 +1,3 @@
-package com.kronos.empleados
-
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
@@ -20,6 +18,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.google.gson.Gson
+import com.kronos.empleados.Empleado
+
+import com.kronos.empleados.Sesion
 
 @Composable
 fun LoginEmpleadoScreen(onLoginExitoso: (Empleado) -> Unit) {
@@ -41,6 +42,7 @@ fun LoginEmpleadoScreen(onLoginExitoso: (Empleado) -> Unit) {
         Button(onClick = {
             val empleado = buscarEmpleadoPorPin(context, pin)
             if (empleado != null) {
+                Sesion.empleadoActual = empleado
                 onLoginExitoso(empleado)
             } else {
                 Toast.makeText(context, "PIN inválido", Toast.LENGTH_SHORT).show()

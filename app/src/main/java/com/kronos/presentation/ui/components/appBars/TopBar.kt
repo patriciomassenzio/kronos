@@ -13,6 +13,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
+import com.kronos.empleados.Sesion
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,6 +34,7 @@ fun TopBar(appBarController: NavController, homeNavcontroller: NavController) {
         actions = {
 
             TextButton(onClick = {
+                Sesion.empleadoActual = null
                     appBarController.popBackStack()
             }) {
                 Text(text = "Cerrar sesion")

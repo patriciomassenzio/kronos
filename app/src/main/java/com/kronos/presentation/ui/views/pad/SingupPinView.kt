@@ -122,7 +122,7 @@ fun NumericPad(employeesLoginViewModel: EmployeesLoginViewModel, navController: 
                         .size(54.dp)
                         .padding(10.dp),
                     shape = CircleShape,
-                    color = if (pines?.toString()?.length ?: 0 > index)
+                    color = if (pines.toString().length > index)
                         MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.background,
                     border = BorderStroke(2.dp, Color.Gray)
                 ) {}
@@ -198,6 +198,8 @@ fun NumericPad(employeesLoginViewModel: EmployeesLoginViewModel, navController: 
         }
     }
 }
+
+private fun EmployeesLoginViewModel.employeesPin(string: String) {}
 
 // Función para obtener la imagen según el dígito
 fun getDrawableForDigit(digit: Int): Int {

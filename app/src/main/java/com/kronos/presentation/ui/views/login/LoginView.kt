@@ -1,5 +1,6 @@
 package com.kronos.presentation.ui.views.login
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,7 +26,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+
 import com.kronos.data.datastore.StoreToken
+import com.kronos.empleados.EmpleadoStorage
 import com.kronos.navigation.Routes
 import com.kronos.presentation.ui.components.buttons.KronosFilledButton
 import com.kronos.presentation.ui.components.buttons.KronosOutlinedButton
@@ -36,13 +39,14 @@ import com.kronos.presentation.ui.components.inputs.KronosInput
 import com.kronos.presentation.ui.theme.AppColors
 import com.kronos.presentation.ui.theme.background
 import com.kronos.presentation.ui.views.alerts.LoginAlerts
+
 import kotlinx.coroutines.launch
 
 @Preview(device = Devices.AUTOMOTIVE_1024p)
 @Composable
-fun preview(){
-    val context = LocalContext.current
-    LoginView(Modifier.fillMaxSize(), NavController(context), LoginViewModel(context))
+fun Preview(){
+    LocalContext.current
+    
 }
 
 @Composable
@@ -55,7 +59,8 @@ fun LoginView(
     val validPassword by loginViewModel.validPassword.observeAsState(true)
     val validEmail by loginViewModel.validEmail.observeAsState(true)
     val isLoginEnable: Boolean by loginViewModel.isLoginEnable.observeAsState(initial = false)
-
+    val pinEmpleado: String by loginViewModel.pin.observeAsState(initial = "")
+    val validPin by loginViewModel.validpin.observeAsState(true)
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val dataStore = StoreToken(context)
@@ -106,7 +111,19 @@ fun LoginView(
                 },
                 modifier = Modifier.fillMaxWidth()
             )
-
+            KronosInput(
+                title = "Pin de Usuario",
+                value = pinEmpleado,
+                keyboardType = KeyboardType.NumberPassword,
+                isValid = validPin,
+                onValueChange = {
+                    loginViewModel.onKronosInputChanged(
+                        inputTitle = "Pin de Usuario",
+                        value = it
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+            )
             Spacer(modifier = Modifier.size(16.dp));
 
             KronosFilledButton(
@@ -117,13 +134,32 @@ fun LoginView(
                         username = email,
                         password = password,
                         onResult = { scope.launch { dataStore.saveToken(it.toString()) } },
-                        onSuccess = { navController.navigate( Routes.Home.route) }
+                        onSuccess = { navController.navigate(Routes.Home.route) }
                     )
+
+
                     navController.navigate(Routes.Home.route)
                 },
                 modifier = Modifier.fillMaxWidth(),
             )
-
+            KronosFilledButton(
+                text = "Ingresar con PIN",
+                enabled = pinEmpleado.length == 4,
+                onClick = {
+                    val empleado = EmpleadoStorage.buscarEmpleadoPorPin(context, pinEmpleado)
+                    if (empleado != null) {
+                        Toast.makeText(
+                            context,
+                            "Bienvenido, ${'$'}{empleado.nombre}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        navController.navigate(Routes.Home.route)
+                    } else {
+                        Toast.makeText(context, "PIN inválido", Toast.LENGTH_SHORT).show()
+                    }
+                },
+                modifier = Modifier.fillMaxWidth(),
+            )
             if (loginViewModel.showAlert) {
                 LoginAlerts(
                     title = "Alerta",
